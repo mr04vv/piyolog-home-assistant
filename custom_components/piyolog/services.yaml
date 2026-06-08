@@ -441,6 +441,216 @@ add_walk:
       selector:
         text:
 
+add_weight:
+  name: Add Weight Event
+  description: Register a body weight measurement to PiyoLog
+  fields:
+    value:
+      name: Weight (kg)
+      description: Body weight in kilograms
+      example: 5.23
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 50
+          step: 0.01
+          unit_of_measurement: kg
+    baby_id:
+      name: Baby ID
+      description: Baby ID (optional, uses default if not specified)
+      example: "abc123def456"
+      selector:
+        text:
+    baby_index:
+      name: Baby Index
+      description: Index of baby (0-based, optional)
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 10
+    datetime:
+      name: Date/Time
+      description: Event datetime (optional, defaults to now)
+      example: "2026-02-09T14:30:00"
+      selector:
+        text:
+    memo:
+      name: Memo
+      description: Optional note
+      example: "Morning measurement"
+      selector:
+        text:
+
+add_height:
+  name: Add Height Event
+  description: Register a body height measurement to PiyoLog
+  fields:
+    value:
+      name: Height (cm)
+      description: Body height in centimeters
+      example: 60.5
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 200
+          step: 0.1
+          unit_of_measurement: cm
+    baby_id:
+      name: Baby ID
+      description: Baby ID (optional, uses default if not specified)
+      example: "abc123def456"
+      selector:
+        text:
+    baby_index:
+      name: Baby Index
+      description: Index of baby (0-based, optional)
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 10
+    datetime:
+      name: Date/Time
+      description: Event datetime (optional, defaults to now)
+      example: "2026-02-09T14:30:00"
+      selector:
+        text:
+    memo:
+      name: Memo
+      description: Optional note
+      example: "Monthly measurement"
+      selector:
+        text:
+
+add_temperature:
+  name: Add Temperature Event
+  description: Register a body temperature measurement to PiyoLog
+  fields:
+    value:
+      name: Temperature (°C)
+      description: Body temperature in Celsius
+      example: 37.2
+      required: true
+      selector:
+        number:
+          min: 30
+          max: 45
+          step: 0.1
+          unit_of_measurement: "°C"
+    baby_id:
+      name: Baby ID
+      description: Baby ID (optional, uses default if not specified)
+      example: "abc123def456"
+      selector:
+        text:
+    baby_index:
+      name: Baby Index
+      description: Index of baby (0-based, optional)
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 10
+    datetime:
+      name: Date/Time
+      description: Event datetime (optional, defaults to now)
+      example: "2026-02-09T14:30:00"
+      selector:
+        text:
+    memo:
+      name: Memo
+      description: Optional note
+      example: "Slight fever"
+      selector:
+        text:
+
+add_head_circumference:
+  name: Add Head Circumference Event
+  description: Register a head circumference measurement to PiyoLog
+  fields:
+    value:
+      name: Head Circumference (cm)
+      description: Head circumference in centimeters
+      example: 40.5
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 0.1
+          unit_of_measurement: cm
+    baby_id:
+      name: Baby ID
+      description: Baby ID (optional, uses default if not specified)
+      example: "abc123def456"
+      selector:
+        text:
+    baby_index:
+      name: Baby Index
+      description: Index of baby (0-based, optional)
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 10
+    datetime:
+      name: Date/Time
+      description: Event datetime (optional, defaults to now)
+      example: "2026-02-09T14:30:00"
+      selector:
+        text:
+    memo:
+      name: Memo
+      description: Optional note
+      example: "Checkup measurement"
+      selector:
+        text:
+
+add_chest_circumference:
+  name: Add Chest Circumference Event
+  description: Register a chest circumference measurement to PiyoLog
+  fields:
+    value:
+      name: Chest Circumference (cm)
+      description: Chest circumference in centimeters
+      example: 42.0
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 0.1
+          unit_of_measurement: cm
+    baby_id:
+      name: Baby ID
+      description: Baby ID (optional, uses default if not specified)
+      example: "abc123def456"
+      selector:
+        text:
+    baby_index:
+      name: Baby Index
+      description: Index of baby (0-based, optional)
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 10
+    datetime:
+      name: Date/Time
+      description: Event datetime (optional, defaults to now)
+      example: "2026-02-09T14:30:00"
+      selector:
+        text:
+    memo:
+      name: Memo
+      description: Optional note
+      example: "Checkup measurement"
+      selector:
+        text:
+
 delete_most_recent_event:
   name: Delete Most Recent Event
   description: >-

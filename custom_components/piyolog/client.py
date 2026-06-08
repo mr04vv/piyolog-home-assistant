@@ -1044,6 +1044,50 @@ class PiyoLogClient:
             .save()
         )
 
+    def add_head(self, value, datetime=None, baby_id=None, baby_index=None, memo=""):
+        """
+        Add head circumference event.
+
+        Args:
+            value: Head circumference in cm
+            datetime: Event datetime (None for current time)
+            baby_id: Baby ID (optional)
+            baby_index: Baby index (optional)
+            memo: Event memo
+
+        Returns:
+            dict: Server response
+        """
+        return (
+            self.new_baby_event(
+                EventType.HEAD, datetime, baby_id, baby_index, memo
+            )
+            .set_value(value)
+            .save()
+        )
+
+    def add_chest(self, value, datetime=None, baby_id=None, baby_index=None, memo=""):
+        """
+        Add chest circumference event.
+
+        Args:
+            value: Chest circumference in cm
+            datetime: Event datetime (None for current time)
+            baby_id: Baby ID (optional)
+            baby_index: Baby index (optional)
+            memo: Event memo
+
+        Returns:
+            dict: Server response
+        """
+        return (
+            self.new_baby_event(
+                EventType.CHEST, datetime, baby_id, baby_index, memo
+            )
+            .set_value(value)
+            .save()
+        )
+
     def add_vomit(self, datetime=None, baby_id=None, baby_index=None, memo=""):
         """Add vomiting event."""
         return self.new_baby_event(

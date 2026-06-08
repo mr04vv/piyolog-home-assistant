@@ -32,6 +32,11 @@ from .const import (
     SERVICE_ADD_BREASTFEEDING,
     SERVICE_ADD_BATH,
     SERVICE_ADD_WALK,
+    SERVICE_ADD_WEIGHT,
+    SERVICE_ADD_HEIGHT,
+    SERVICE_ADD_TEMPERATURE,
+    SERVICE_ADD_HEAD_CIRCUMFERENCE,
+    SERVICE_ADD_CHEST_CIRCUMFERENCE,
     SERVICE_FORCE_SYNC,
     SERVICE_DELETE_MOST_RECENT_EVENT,
     DEFAULT_DELETE_MAX_AGE_MINUTES,
@@ -51,6 +56,7 @@ from .const import (
     ATTR_EVENT_TYPE,
     ATTR_MAX_AGE_MINUTES,
     ATTR_SYNC_BEFORE_CHECK,
+    ATTR_VALUE,
     POOP_AMOUNT_MAP,
     POOP_HARDNESS_MAP,
     POOP_COLOR_MAP,
@@ -105,6 +111,36 @@ SERVICE_BREASTFEEDING_SCHEMA = SERVICE_BASE_SCHEMA.extend(
         vol.Optional(ATTR_AMOUNT, default=0): vol.All(
             vol.Coerce(float), vol.Range(min=0)
         ),
+    }
+)
+
+SERVICE_WEIGHT_SCHEMA = SERVICE_BASE_SCHEMA.extend(
+    {
+        vol.Required(ATTR_VALUE): vol.All(vol.Coerce(float), vol.Range(min=0, max=50)),
+    }
+)
+
+SERVICE_HEIGHT_SCHEMA = SERVICE_BASE_SCHEMA.extend(
+    {
+        vol.Required(ATTR_VALUE): vol.All(vol.Coerce(float), vol.Range(min=0, max=200)),
+    }
+)
+
+SERVICE_TEMPERATURE_SCHEMA = SERVICE_BASE_SCHEMA.extend(
+    {
+        vol.Required(ATTR_VALUE): vol.All(vol.Coerce(float), vol.Range(min=30, max=45)),
+    }
+)
+
+SERVICE_HEAD_CIRCUMFERENCE_SCHEMA = SERVICE_BASE_SCHEMA.extend(
+    {
+        vol.Required(ATTR_VALUE): vol.All(vol.Coerce(float), vol.Range(min=0, max=100)),
+    }
+)
+
+SERVICE_CHEST_CIRCUMFERENCE_SCHEMA = SERVICE_BASE_SCHEMA.extend(
+    {
+        vol.Required(ATTR_VALUE): vol.All(vol.Coerce(float), vol.Range(min=0, max=100)),
     }
 )
 
@@ -186,6 +222,11 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             SERVICE_ADD_BREASTFEEDING,
             SERVICE_ADD_BATH,
             SERVICE_ADD_WALK,
+            SERVICE_ADD_WEIGHT,
+            SERVICE_ADD_HEIGHT,
+            SERVICE_ADD_TEMPERATURE,
+            SERVICE_ADD_HEAD_CIRCUMFERENCE,
+            SERVICE_ADD_CHEST_CIRCUMFERENCE,
             SERVICE_FORCE_SYNC,
             SERVICE_DELETE_MOST_RECENT_EVENT,
         ]:
@@ -452,6 +493,96 @@ async def _async_register_services(hass: HomeAssistant, client: PiyoLogClient):
             _LOGGER.error("Failed to add breastfeeding event: %s", err)
             raise
 
+    async def add_weight_service(call: ServiceCall):
+        """Handle add_weight service call."""
+        baby_id = call.data.get(ATTR_BABY_ID)
+        baby_index = call.data.get(ATTR_BABY_INDEX)
+        datetime_str = call.data.get(ATTR_DATETIME)
+        memo = call.data.get(ATTR_MEMO, "")
+        value = call.data[ATTR_VALUE]
+
+        try:
+            response = await hass.async_add_executor_job(
+                client.add_weight, value, datetime_str, baby_id, baby_index, memo
+            )
+            _LOGGER.info("Successfully added weight event: %skg", value)
+            await _refresh_after_add(response)
+        except Exception as err:
+            _LOGGER.error("Failed to add weight event: %s", err)
+            raise
+
+    async def add_height_service(call: ServiceCall):
+        """Handle add_height service call."""
+        baby_id = call.data.get(ATTR_BABY_ID)
+        baby_index = call.data.get(ATTR_BABY_INDEX)
+        datetime_str = call.data.get(ATTR_DATETIME)
+        memo = call.data.get(ATTR_MEMO, "")
+        value = call.data[ATTR_VALUE]
+
+        try:
+            response = await hass.async_add_executor_job(
+                client.add_height, value, datetime_str, baby_id, baby_index, memo
+            )
+            _LOGGER.info("Successfully added height event: %scm", value)
+            await _refresh_after_add(response)
+        except Exception as err:
+            _LOGGER.error("Failed to add height event: %s", err)
+            raise
+
+    async def add_temperature_service(call: ServiceCall):
+        """Handle add_temperature service call."""
+        baby_id = call.data.get(ATTR_BABY_ID)
+        baby_index = call.data.get(ATTR_BABY_INDEX)
+        datetime_str = call.data.get(ATTR_DATETIME)
+        memo = call.data.get(ATTR_MEMO, "")
+        value = call.data[ATTR_VALUE]
+
+        try:
+            response = await hass.async_add_executor_job(
+                client.add_temperature, value, datetime_str, baby_id, baby_index, memo
+            )
+            _LOGGER.info("Successfully added temperature event: %s°C", value)
+            await _refresh_after_add(response)
+        except Exception as err:
+            _LOGGER.error("Failed to add temperature event: %s", err)
+            raise
+
+    async def add_head_circumference_service(call: ServiceCall):
+        """Handle add_head_circumference service call."""
+        baby_id = call.data.get(ATTR_BABY_ID)
+        baby_index = call.data.get(ATTR_BABY_INDEX)
+        datetime_str = call.data.get(ATTR_DATETIME)
+        memo = call.data.get(ATTR_MEMO, "")
+        value = call.data[ATTR_VALUE]
+
+        try:
+            response = await hass.async_add_executor_job(
+                client.add_head, value, datetime_str, baby_id, baby_index, memo
+            )
+            _LOGGER.info("Successfully added head circumference event: %scm", value)
+            await _refresh_after_add(response)
+        except Exception as err:
+            _LOGGER.error("Failed to add head circumference event: %s", err)
+            raise
+
+    async def add_chest_circumference_service(call: ServiceCall):
+        """Handle add_chest_circumference service call."""
+        baby_id = call.data.get(ATTR_BABY_ID)
+        baby_index = call.data.get(ATTR_BABY_INDEX)
+        datetime_str = call.data.get(ATTR_DATETIME)
+        memo = call.data.get(ATTR_MEMO, "")
+        value = call.data[ATTR_VALUE]
+
+        try:
+            response = await hass.async_add_executor_job(
+                client.add_chest, value, datetime_str, baby_id, baby_index, memo
+            )
+            _LOGGER.info("Successfully added chest circumference event: %scm", value)
+            await _refresh_after_add(response)
+        except Exception as err:
+            _LOGGER.error("Failed to add chest circumference event: %s", err)
+            raise
+
     # Register services
     hass.services.async_register(
         DOMAIN, SERVICE_ADD_PEE, add_pee_service, schema=SERVICE_BASE_SCHEMA
@@ -485,6 +616,30 @@ async def _async_register_services(hass: HomeAssistant, client: PiyoLogClient):
     )
     hass.services.async_register(
         DOMAIN, SERVICE_ADD_WALK, add_walk_service, schema=SERVICE_BASE_SCHEMA
+    )
+    hass.services.async_register(
+        DOMAIN, SERVICE_ADD_WEIGHT, add_weight_service, schema=SERVICE_WEIGHT_SCHEMA
+    )
+    hass.services.async_register(
+        DOMAIN, SERVICE_ADD_HEIGHT, add_height_service, schema=SERVICE_HEIGHT_SCHEMA
+    )
+    hass.services.async_register(
+        DOMAIN,
+        SERVICE_ADD_TEMPERATURE,
+        add_temperature_service,
+        schema=SERVICE_TEMPERATURE_SCHEMA,
+    )
+    hass.services.async_register(
+        DOMAIN,
+        SERVICE_ADD_HEAD_CIRCUMFERENCE,
+        add_head_circumference_service,
+        schema=SERVICE_HEAD_CIRCUMFERENCE_SCHEMA,
+    )
+    hass.services.async_register(
+        DOMAIN,
+        SERVICE_ADD_CHEST_CIRCUMFERENCE,
+        add_chest_circumference_service,
+        schema=SERVICE_CHEST_CIRCUMFERENCE_SCHEMA,
     )
 
     async def delete_most_recent_event_service(call: ServiceCall):
